@@ -7,9 +7,8 @@ body {
 }
 
 /* Remove default orange outline, add custom blue glow */
-.ProseMirror-focused {
-  outline: none !important;
-  box-shadow: 0 0 0 3px #2563eb !important;
-  outline-offset: 4px !important;
-  border: none !important;
+
+.ProseMirror {
+  outline: 3px solid #2563eb; /* Your custom blue border */
+  outline-offset: 4px;
 }

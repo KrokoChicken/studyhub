@@ -1,5 +1,5 @@
 
-// components/extensions/CustomTextStyle.ts
+// components/extensions/CustomTextStyles.ts
 import { Mark, mergeAttributes, CommandProps } from '@tiptap/core'
 
 export interface CustomTextStyleOptions {

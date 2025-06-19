@@ -24,12 +24,6 @@
   transition: outline-color 0.15s ease-in-out;
 }
 
-.ProseMirror-focused {
-  outline: none !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
 .editor p {
   margin: 0 0 1rem 0;
 }
@@ -84,4 +78,20 @@
   background-color: #2563eb;
   color: white;
   border-color: #2563eb;
+}
+
+.dropCursor {
+  border-left: 4px solid white !important;
+  height: 2em !important;
+  margin-left: -2px !important;
+  position: relative !important;
+  pointer-events: none !important;
+  z-index: 10000 !important;
+  user-select: none !important;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.group {
+  display: flex;
+  gap: 4px;
 }
