@@ -10,7 +10,7 @@ export default function Navbar() {
   return (
     <nav className={styles.navbar}>
       <div className={styles.logo}>
-        <Link href="/">studyhub.dk</Link>
+        <Link href={session ? "/dashboard" : "/"}>studyhub.dk</Link>
       </div>
 
       <ul className={styles.navLinks}>

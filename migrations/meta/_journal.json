@@ -8,6 +8,20 @@
       "when": 1749650700542,
       "tag": "0000_late_tusk",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1749743390804,
+      "tag": "0001_shallow_cyclops",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1749787115315,
+      "tag": "0002_young_makkari",
+      "breakpoints": true
     }
   ]
 }

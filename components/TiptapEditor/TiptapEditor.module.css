@@ -1,0 +1,87 @@
+/* Wrapper not mandatory but can wrap for padding, margins, etc */
+.editorWrapper {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+}
+
+/* The editable editor area */
+.editor {
+  min-height: 300px;
+  outline-offset: 4px;
+  outline-color: transparent;
+  outline-style: solid;
+  color: white !important;
+  background-color: #121212; /* Dark background */
+  padding: 1rem;
+  border-radius: 1px;
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  transition: outline-color 0.15s ease-in-out;
+}
+
+.ProseMirror-focused {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.editor p {
+  margin: 0 0 1rem 0;
+}
+
+.editor img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  border-radius: 4px;
+  cursor: grab;
+  transition: width 0.25s ease;
+}
+
+.editor img:active {
+  cursor: grabbing;
+}
+
+/* Toolbar styling */
+.toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.toolbar button {
+  padding: 6px 14px;
+  border: 1px solid #ccc;
+  background: #222;
+  color: white;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  user-select: none;
+}
+
+.toolbar button:hover:not(:disabled) {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.toolbar button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.toolbar button.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}

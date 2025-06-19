@@ -1,0 +1,20 @@
+.resizable-image-wrapper {
+  user-select: none;
+  margin: 8px 0;
+  border: 1px solid transparent;
+}
+
+.resizable-image-wrapper.selected {
+  border-color: #2563eb;
+}
+
+.resize-handle {
+  border-radius: 3px;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+  user-select: none;
+}
+
+.resize-handle:hover {
+  opacity: 1;
+}

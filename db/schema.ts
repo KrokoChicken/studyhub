@@ -26,6 +26,18 @@ export const subjects = pgTable('subjects', {
 });
 
 // Notes
+
+
+export const topics = pgTable('topics', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 150 }).notNull(),
+  subjectId: integer('subject_id').references(() => subjects.id).notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  note: text("note"),
+});
+
+
+
 /*
 export const notes = pgTable('notes', {
   id: serial('id').primaryKey(),
@@ -34,13 +46,6 @@ export const notes = pgTable('notes', {
   isShared: boolean('is_shared').default(false),
   subjectId: integer('subject_id').references(() => subjects.id).notNull(),
   userId: integer('user_id').references(() => users.id).notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
-});
-
-export const topics = pgTable('topics', {
-  id: serial('id').primaryKey(),
-  name: varchar('name', { length: 150 }).notNull(),
-  subjectId: integer('subject_id').references(() => subjects.id).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
 */
