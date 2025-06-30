@@ -1,14 +1,8 @@
-import SubjectList from "@/components/SubjectList/SubjectList";
-import styles from "./page.module.css";
+// app/dashboard/page.tsx
+import DashboardClient from "./DashboardClient";
 
 export default function DashboardPage() {
-  return (
-    <main className={styles.container}>
-      <div className={styles.sidebar}>
-        <SubjectList />
-      </div>
+  // Optionally fetch some initial data here if needed
 
-      <div className={styles.content}></div>
-    </main>
-  );
+  return <DashboardClient />;
 }

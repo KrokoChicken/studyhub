@@ -2,14 +2,13 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Image } from "../extensions/Image"; // Custom Image extension
-import { CustomTextStyle } from "../extensions/CustomTextStyles"; // Custom text style extension
-import DropCursor from "../extensions/DropCursor"; // Drop cursor extension for drag & drop visual
-import { uploadToSupabase } from "@/lib/uploadtoSupabase"; // Function to upload images to Supabase storage
-import { useEffect } from "react";
+import { Image } from "../extensions/Image";
+import { CustomTextStyle } from "../extensions/CustomTextStyles";
+import DropCursor from "../extensions/DropCursor";
+import { uploadToSupabase } from "@/lib/uploadtoSupabase";
+import { useEffect, useState } from "react";
 import styles from "./TiptapEditor.module.css";
 
-// Predefined font sizes and families for the dropdown menus
 const FONT_SIZES = [
   "12px",
   "14px",
@@ -29,42 +28,34 @@ const FONT_FAMILIES = [
   "monospace",
 ];
 
-// Props for this component
 type Props = {
-  content: string; // HTML content to load into editor
-  onChange: (html: string) => void; // Callback when content changes
+  content: string;
+  onChange: (html: string) => void;
 };
 
 export default function TiptapEditor({ content, onChange }: Props) {
-  // Initialize the Tiptap editor with extensions and handlers
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
   const editor = useEditor({
-    content, // initial content
-    extensions: [StarterKit, Image, CustomTextStyle, DropCursor], // loaded extensions
+    content,
+    extensions: [StarterKit, Image, CustomTextStyle, DropCursor],
     onUpdate({ editor }) {
-      // When editor content updates, call the onChange prop with new HTML
       onChange(editor.getHTML());
     },
     editorProps: {
-      // Add class to the editable area for styling
       attributes: {
-        class:
-          "prose dark:prose-invert focus:outline-none max-w-full min-h-[400px]",
+        class: `prose focus:outline-none max-w-full min-h-[400px] ${
+          theme === "dark" ? styles.dark : styles.light
+        }`,
       },
-
-      // Handle pasting images into the editor
       handlePaste(view, event) {
-        // Extract items from clipboard data
         const items = Array.from(event.clipboardData?.items || []);
-        // Find the first image file, if any
         const file =
           items.find((item) => item.type.includes("image"))?.getAsFile() ??
           undefined;
-
         if (file) {
-          // Upload image file to Supabase storage
           uploadToSupabase(file).then((url) => {
             if (url && editor) {
-              // Insert image into the editor when upload succeeds
               editor
                 .chain()
                 .focus()
@@ -72,24 +63,18 @@ export default function TiptapEditor({ content, onChange }: Props) {
                 .run();
             }
           });
-          return true; // indicate we handled this event
+          return true;
         }
-        return false; // not an image, let default happen
+        return false;
       },
-
-      // Handle dropping images into the editor
       handleDrop(view, event) {
-        // Extract image files from the dropped data
         const file =
           Array.from(event.dataTransfer?.files || []).find((f) =>
             f.type.includes("image")
           ) ?? undefined;
-
         if (file) {
-          // Upload dropped image file to Supabase storage
           uploadToSupabase(file).then((url) => {
             if (url && editor) {
-              // Insert image into the editor when upload succeeds
               editor
                 .chain()
                 .focus()
@@ -97,28 +82,48 @@ export default function TiptapEditor({ content, onChange }: Props) {
                 .run();
             }
           });
-          return true; // handled drop event
+          return true;
         }
-        return false; // not an image, allow default
+        return false;
       },
     },
   });
 
-  // Sync editor content if the `content` prop changes externally
   useEffect(() => {
     if (editor && content !== editor.getHTML()) {
       editor.commands.setContent(content);
     }
   }, [content, editor]);
 
-  // Render nothing if editor is not ready yet
   if (!editor) return null;
 
   return (
     <>
-      {/* Toolbar with formatting buttons and font selectors */}
-      <div className={styles.toolbar}>
-        {/* Basic formatting buttons */}
+      {/* Theme toggle */}
+      <div style={{ marginBottom: "1rem", textAlign: "right" }}>
+        <button
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          style={{
+            cursor: "pointer",
+            padding: "0.3rem 0.7rem",
+            borderRadius: 6,
+            border: "1px solid #2563eb",
+            backgroundColor: theme === "light" ? "white" : "#2563eb",
+            color: theme === "light" ? "#2563eb" : "white",
+            fontWeight: "600",
+          }}
+          title="Toggle light/dark theme"
+        >
+          {theme === "light" ? "Dark Mode" : "Light Mode"}
+        </button>
+      </div>
+
+      {/* Toolbar */}
+      <div
+        className={`${styles.toolbar} ${
+          theme === "dark" ? styles.dark : styles.light
+        }`}
+      >
         <div className={styles.group}>
           <button
             onClick={() => editor.chain().focus().toggleBold().run()}
@@ -143,7 +148,6 @@ export default function TiptapEditor({ content, onChange }: Props) {
           </button>
         </div>
 
-        {/* Font size selector */}
         <select
           className={styles.select}
           value={editor.getAttributes("customTextStyle").fontSize || ""}
@@ -165,7 +169,6 @@ export default function TiptapEditor({ content, onChange }: Props) {
           ))}
         </select>
 
-        {/* Font family selector */}
         <select
           className={styles.select}
           value={editor.getAttributes("customTextStyle").fontFamily || ""}
@@ -187,7 +190,6 @@ export default function TiptapEditor({ content, onChange }: Props) {
           ))}
         </select>
 
-        {/* Clear all custom text styles */}
         <button
           onClick={() => editor.chain().focus().unsetCustomTextStyle().run()}
           title="Clear Formatting"
@@ -196,8 +198,13 @@ export default function TiptapEditor({ content, onChange }: Props) {
         </button>
       </div>
 
-      {/* The editable content area */}
-      <EditorContent editor={editor} className={styles.editor} />
+      {/* Editor */}
+      <EditorContent
+        editor={editor}
+        className={`${styles.editor} ${
+          theme === "dark" ? styles.dark : styles.light
+        }`}
+      />
     </>
   );
 }

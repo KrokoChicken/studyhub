@@ -22,6 +22,20 @@
       "when": 1749787115315,
       "tag": "0002_young_makkari",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1750738968054,
+      "tag": "0003_complete_lenny_balinger",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1750947821029,
+      "tag": "0004_cheerful_alex_wilder",
+      "breakpoints": true
     }
   ]
 }

@@ -9,6 +9,4 @@ body {
 /* Remove default orange outline, add custom blue glow */
 
 .ProseMirror {
-  outline: 3px solid #2563eb; /* Your custom blue border */
-  outline-offset: 4px;
 }

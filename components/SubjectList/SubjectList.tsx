@@ -2,57 +2,56 @@
 
 import { useState } from "react";
 import styles from "./SubjectList.module.css";
-import { useSubjects } from "@/lib/hooks/useSubjects";
 import Link from "next/link";
 
-export default function SubjectList() {
+type Subject = {
+  id: string;
+  name: string;
+};
+
+type Props = {
+  subjects: Subject[];
+  onAddSubject: (name: string) => Promise<void>;
+};
+
+export default function SubjectList({ subjects, onAddSubject }: Props) {
   const [showModal, setShowModal] = useState(false);
   const [newSubject, setNewSubject] = useState("");
 
-  const { subjects, addSubject, loading, error } = useSubjects();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addSubject(newSubject);
+    await onAddSubject(newSubject);
     setNewSubject("");
     setShowModal(false);
   };
 
   return (
-    <div className={styles.subjectContainer}>
+    <div className={styles.container}>
       <div className={styles.card}>
-        <div className={styles.headerRow}>
+        <header className={styles.header}>
           <h2>Dine fag</h2>
           <button
             onClick={() => setShowModal(true)}
             className={styles.addButton}
+            aria-label="Tilføj nyt fag"
           >
             +
           </button>
-        </div>
+        </header>
 
-        {loading ? (
-          <p>Indlæser...</p>
-        ) : (
-          <ul className={styles.subjectList}>
-            {subjects.map((subject: any) => (
-              <li key={subject.id} className={styles.subjectItem}>
-                <Link
-                  href={`/subjects/${subject.id}`}
-                  className={styles.subjectLink}
-                >
-                  {subject.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <ul className={styles.list}>
+          {subjects.map((subject) => (
+            <li key={subject.id} className={styles.listItem}>
+              <Link href={`/subjects/${subject.id}`} className={styles.link}>
+                {subject.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {showModal && (
-        <div className={styles.modalOverlay}>
+        <div className={styles.modalOverlay} role="dialog" aria-modal="true">
           <div className={styles.modal}>
             <h3>Tilføj fag</h3>
             <form onSubmit={handleSubmit} className={styles.form}>
@@ -62,15 +61,16 @@ export default function SubjectList() {
                 placeholder="Fx Matematik"
                 className={styles.input}
                 required
+                autoFocus
               />
-              <div className={styles.modalActions}>
-                <button type="submit" className={styles.button}>
+              <div className={styles.actions}>
+                <button type="submit" className={styles.saveButton}>
                   Gem
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className={styles.cancel}
+                  className={styles.cancelButton}
                 >
                   Annuller
                 </button>
